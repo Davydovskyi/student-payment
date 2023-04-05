@@ -7,7 +7,7 @@
     <groupId>edu.jcourse</groupId>
     <artifactId>student-payment</artifactId>
     <version>1.0</version>
-<!--    <packaging>war</packaging>-->
+    <!--    <packaging>war</packaging>-->
 
     <properties>
         <maven.compiler.source>19</maven.compiler.source>
@@ -58,6 +58,11 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring-data.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
@@ -94,6 +99,14 @@
         <!--            <artifactId>log4j-core</artifactId>-->
         <!--            <version>${log4j.version}</version>-->
         <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
@@ -109,14 +122,14 @@
                 <version>2.22.2</version>
             </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-war-plugin</artifactId>-->
-<!--                <version>3.3.2</version>-->
-<!--                <configuration>-->
-<!--                    <outputDirectory>C:\Program Files\Apache Software Foundation\Tomcat 10.0\webapps</outputDirectory>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-war-plugin</artifactId>-->
+            <!--                <version>3.3.2</version>-->
+            <!--                <configuration>-->
+            <!--                    <outputDirectory>C:\Program Files\Apache Software Foundation\Tomcat 10.0\webapps</outputDirectory>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 
