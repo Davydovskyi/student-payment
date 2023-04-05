@@ -1,7 +1,10 @@
 package edu.jcourse.student.business;
 
+import edu.jcourse.student.dao.StreetRepository;
 import edu.jcourse.student.dao.StudentOrderRepository;
+import edu.jcourse.student.domain.Address;
 import edu.jcourse.student.domain.Person;
+import edu.jcourse.student.domain.Street;
 import edu.jcourse.student.domain.StudentOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +20,17 @@ public class StudentOrderService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentOrderService.class);
 
-    private StudentOrderRepository dao;
+    private StudentOrderRepository studentOrderRepository;
+    private StreetRepository streetRepository;
 
     @Autowired
-    public void setDao(StudentOrderRepository dao) {
-        this.dao = dao;
+    public void setStudentOrderRepository(StudentOrderRepository studentOrderRepository) {
+        this.studentOrderRepository = studentOrderRepository;
+    }
+
+    @Autowired
+    public void setStreetRepository(StreetRepository streetRepository) {
+        this.streetRepository = streetRepository;
     }
 
     @Transactional
@@ -29,12 +38,12 @@ public class StudentOrderService {
         StudentOrder studentOrder = new StudentOrder();
         studentOrder.setWife(buildPerson(1));
         studentOrder.setHusband(buildPerson(2));
-        dao.saveAndFlush(studentOrder);
+        studentOrderRepository.saveAndFlush(studentOrder);
     }
 
     @Transactional
     public void testFindAll() {
-        List<StudentOrder> studentOrders = dao.findAll();
+        List<StudentOrder> studentOrders = studentOrderRepository.findAll();
         LOGGER.info(studentOrders.get(0).getWife().getGivenName());
         LOGGER.info("size : {}", studentOrders.size());
     }
@@ -42,6 +51,15 @@ public class StudentOrderService {
     private Person buildPerson(int sex) {
         Person person = new Person();
         person.setDateOfBirth(LocalDate.now());
+
+        Address address = new Address();
+        address.setPostCode("190000");
+        address.setBuilding("21");
+        address.setExtension("B");
+        address.setApartment("199");
+        Street street = streetRepository.findById(1L).orElse(null);
+        address.setStreet(street);
+        person.setAddress(address);
 
         if (sex == 1) {
             person.setSurName("Петрова");
