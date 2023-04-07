@@ -40,6 +40,7 @@ public class StudentOrder {
             @AttributeOverride(name = "passport.issueDate", column = @Column(name = "h_passport_date")),
             @AttributeOverride(name = "studentId", column = @Column(name = "h_student_number"))
     })
+    @Embedded
     private Adult husband;
 
     @AssociationOverrides({
@@ -61,6 +62,7 @@ public class StudentOrder {
             @AttributeOverride(name = "passport.issueDate", column = @Column(name = "w_passport_date")),
             @AttributeOverride(name = "studentId", column = @Column(name = "w_student_number"))
     })
+    @Embedded
     private Adult wife;
     @Column(name = "certificate_number")
     private String certificateNumber;

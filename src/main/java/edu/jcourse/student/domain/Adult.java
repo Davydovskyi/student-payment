@@ -4,7 +4,6 @@ import edu.jcourse.student.domain.document.Passport;
 import jakarta.persistence.*;
 
 @Embeddable
-@MappedSuperclass
 public class Adult extends Person {
 
     private Passport passport;

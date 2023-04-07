@@ -82,7 +82,7 @@ public class StudentOrderService {
         List<StudentOrder> studentOrders = daoStudentOrder.findAll();
         LOGGER.info(studentOrders.get(0).getWife().getGivenName());
         LOGGER.info("size : {}", studentOrders.size());
-        LOGGER.info(studentOrders.get(0).getChildren().get(0).getGivenName());
+        LOGGER.info(studentOrders.get(0).getChildren().get(0).getChild().getGivenName());
     }
 
     private Adult buildPerson(int sex) {
@@ -128,9 +128,12 @@ public class StudentOrderService {
     }
 
     private StudentOrderChild buildChild(StudentOrder studentOrder) {
-        StudentOrderChild child = new StudentOrderChild();
-        child.setDateOfBirth(LocalDate.now());
-        child.setStudentOrder(studentOrder);
+        StudentOrderChild studentOrderChild = new StudentOrderChild();
+
+        studentOrderChild.setStudentOrder(studentOrder);
+
+        Child child = new Child();
+        studentOrderChild.setChild(child);
 
         Address address = new Address();
         address.setPostCode("190000");
@@ -144,11 +147,11 @@ public class StudentOrderService {
         child.setSurName("Петров");
         child.setGivenName("Дмитрий");
         child.setPatronymic("Иванович");
-
+        child.setDateOfBirth(LocalDate.now());
         child.setCertificateNumber("BIRTH N");
         child.setCertificateDate(LocalDate.now());
         child.setRegisterOffice(daoRegister.findById(1L).orElse(null));
 
-        return child;
+        return studentOrderChild;
     }
 }
