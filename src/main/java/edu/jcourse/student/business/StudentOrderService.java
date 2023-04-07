@@ -1,7 +1,6 @@
 package edu.jcourse.student.business;
 
-import edu.jcourse.student.dao.StreetRepository;
-import edu.jcourse.student.dao.StudentOrderRepository;
+import edu.jcourse.student.dao.*;
 import edu.jcourse.student.domain.Address;
 import edu.jcourse.student.domain.Adult;
 import edu.jcourse.student.domain.Street;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,6 +23,10 @@ public class StudentOrderService {
 
     private StudentOrderRepository studentOrderRepository;
     private StreetRepository streetRepository;
+    private StudentOrderStatusRepository studentOrderStatusRepository;
+    private PassportOfficeRepository passportOfficeRepository;
+    private RegisterOfficeRepository registerOfficeRepository;
+    private UniversityRepository universityRepository;
 
     @Autowired
     public void setStudentOrderRepository(StudentOrderRepository studentOrderRepository) {
@@ -34,11 +38,36 @@ public class StudentOrderService {
         this.streetRepository = streetRepository;
     }
 
+    @Autowired
+    public void setStudentOrderStatusRepository(StudentOrderStatusRepository studentOrderStatusRepository) {
+        this.studentOrderStatusRepository = studentOrderStatusRepository;
+    }
+
+    @Autowired
+    public void setPassportOfficeRepository(PassportOfficeRepository passportOfficeRepository) {
+        this.passportOfficeRepository = passportOfficeRepository;
+    }
+
+    @Autowired
+    public void setRegisterOfficeRepository(RegisterOfficeRepository registerOfficeRepository) {
+        this.registerOfficeRepository = registerOfficeRepository;
+    }
+
+    @Autowired
+    public void setUniversityRepository(UniversityRepository universityRepository) {
+        this.universityRepository = universityRepository;
+    }
+
     @Transactional
     public void testSave() {
         StudentOrder studentOrder = new StudentOrder();
+        studentOrder.setStudentOrderDate(LocalDateTime.now());
+        studentOrder.setStudentOrderStatus(studentOrderStatusRepository.findById(1L).orElse(null));
         studentOrder.setWife(buildPerson(1));
         studentOrder.setHusband(buildPerson(2));
+        studentOrder.setCertificateNumber("CERTIFICATE");
+        studentOrder.setRegisterOffice(registerOfficeRepository.findById(1L).orElse(null));
+        studentOrder.setMarriageDate(LocalDate.now());
         studentOrderRepository.saveAndFlush(studentOrder);
     }
 
@@ -62,7 +91,11 @@ public class StudentOrderService {
         address.setStreet(street);
         adult.setAddress(address);
 
+        adult.setUniversity(universityRepository.findById(2L).orElse(null));
+
         Passport passport = new Passport();
+        passport.setIssueDate(LocalDate.now());
+        passport.setIssueDepartment(passportOfficeRepository.findById(1L).orElse(null));
         adult.setPassport(passport);
 
         if (sex == 1) {
@@ -72,14 +105,17 @@ public class StudentOrderService {
 
             passport.setPassportSeries("WIFE_S");
             passport.setPassportNumber("WIFE_N");
-            passport.setIssueDate(LocalDate.now());
+
+            adult.setStudentId("12345");
         } else if (sex == 2) {
             adult.setSurName("Грозный 2");
             adult.setGivenName("Иван");
             adult.setPatronymic("Васильевич");
+
             passport.setPassportSeries("HUSBAND_S");
             passport.setPassportNumber("HUSBAND_N");
-            passport.setIssueDate(LocalDate.now());
+
+            adult.setStudentId("67890");
         }
 
         return adult;
