@@ -1,6 +1,5 @@
 package edu.jcourse.student.business;
 
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +14,15 @@ class StudentOrderServiceTest {
     private StudentOrderService service;
 
     @Test
-    @Order(1)
+    void testALL() {
+        testSave();
+        testFindAll();
+    }
+
     void testSave() {
         service.testSave();
     }
 
-    @Test
-    @Order(2)
     void testFindAll() {
         service.testFindAll();
     }
